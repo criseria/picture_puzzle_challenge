@@ -86,8 +86,8 @@
         function shuffle(array) {
             let index = array.length - 1;
             while (index > 0) {
-                // floor : 주어진 숫자 이하의 가장 큰 정수를 반환
-                // random : 0부터 1미만의 난수를 생성 
+                // floor : 주어진 숫자 이하의 가장 큰 정수를 반환하는 함수 
+                // random : 0부터 1미만의 난수를 생성하는 함수
                 const randomIndex = Math.floor(Math.random() * (index + 1));
                 [array[index], array[randomIndex]] = [array[randomIndex], array[index]]; // 배열 요소 무작위 섞기
                 index--;
@@ -125,8 +125,10 @@
             e.preventDefault();
         });
 
+        // 위치 변환하는 이벤트
         container.addEventListener('drop', (e) => {
             if (!isPlaying) return;
+            // 이 때에 obj에 담겨지는 e.target은 드랍되는 타일의 인덱스 값 이다.
             const obj = e.target;
 
             if (obj.className !== dragged.class) {
