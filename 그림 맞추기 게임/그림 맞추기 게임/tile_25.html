@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="tile_25.css">
+    <title>그림 퍼즐 맞추기 게임</title>
+</head>
+
+<body>
+    <div class="wrap-all">
+        <a href="index.html" class="head" style="text-decoration: none;">그림 퍼즐 맞추기 게임</a>
+        <p class="play-time">0</p>
+        <ul class="image-container"></ul>
+        <button class="btn_start">Start</button>
+        <button class="btn_restart" style="display: none;">Restart</button>
+        <p class="game-text">Completed!</p>
+    </div>
+
+
+    <script>
+        const container = document.querySelector(".image-container")
+        const startButton = document.querySelector(".btn_start")
+        const restartButton = document.querySelector(".btn_restart");
+        const gameText = document.querySelector(".game-text")
+        const playTime = document.querySelector(".play-time")
+
+        const tileCount = 25;
+
+        let isPlaying = false;
+        let tiles = [];
+        let timeInterval = 0;
+        let time = 0;
+
+
+        const dragged = {
+            el: null,
+            class: null,
+            index: null,
+        }
+
+        function setGame() {
+            isPlaying = true;
+            time = 0;
+            container.innerHTML = "";
+            gameText.style.display = 'none';
+            clearInterval(timeInterval);
+
+            tiles = createImageTiles();
+
+            tiles.forEach(tile => container.appendChild(tile))
+            setTimeout(() => {
+                container.innerHTML = "";
+                shuffle(tiles).forEach(tile => container.appendChild(tile));
+                timeInterval = setInterval(() => {
+                    playTime.innerHTML = time;
+                    time++;
+                }, 1000);
+                restartButton.style.display = "block"; // 게임 시작 후에 Restart 버튼 표시
+                startButton.style.display = "none"; // 게임 시작 후에 Start 버튼 숨기기
+            }, 5000);
+        }
+
+        function restartGame() {
+            time = 0; // 시간 초 초기화
+            playTime.innerHTML = time; // 시간 초 표시 업데이트
+            setGame();
+            restartButton.style.display = "none"; // 다시 시작할 때 Restart 버튼 숨기기
+            startButton.style.display = "none"; // 다시 시작할 때 Start 버튼 숨기기
+        }
+
+        function createImageTiles() {
+            const tempArray = [];
+            Array(tileCount).fill().forEach((_, i) => {
+                const li = document.createElement("li");
+                li.setAttribute("data-index", i);
+                li.setAttribute('draggable', 'true');
+                li.classList.add(`list${i}`);
+                tempArray.push(li);
+            })
+            return tempArray;
+        }
+
+        function shuffle(array) {
+            let index = array.length - 1;
+            while (index > 0) {
+                const randomIndex = Math.floor(Math.random() * (index + 1));
+                [array[index], array[randomIndex]] = [array[randomIndex], array[index]]
+                index--;
+            }
+            return array;
+        }
+
+        function checkStatus() {
+            const currentList = [...container.children];
+            const unMatchedList = currentList.filter((child, index) => {
+                return Number(child.getAttribute("data-index")) !== index
+            })
+            if (unMatchedList.length === 0) {
+                gameText.style.display = "block";
+                isPlaying = false;
+                clearInterval(timeInterval);
+            }
+        }
+
+        //드래그 앤 드롭
+        container.addEventListener('dragstart', e => {
+            if (!isPlaying) return;
+            const obj = e.target;
+            dragged.el = obj;
+            dragged.class = obj.className;
+            // ... 을 하게 되면 가지고있는 기본 원소가 불러진다.
+            dragged.index = [...obj.parentNode.children].indexOf(obj);
+        })
+
+        container.addEventListener('dragover', e => {
+            e.preventDefault()
+        })
+
+        container.addEventListener('drop', e => {
+            if (!isPlaying) return;
+            const obj = e.target;
+
+            if (obj.className !== dragged.class) {
+                let originPlace;
+                let isLast = false;
+
+                if (dragged.el.nextSibling) {
+                    originPlace = dragged.el.nextSibling
+                } else {
+                    originPlace = dragged.el.previousSibling
+                    isLast = true;
+                }
+                const droppedIndex = dragged.index = [...obj.parentNode.children].indexOf(obj);
+                dragged.index > droppedIndex ? obj.before(dragged.el) : obj.after(dragged.el);
+                isLast ? originPlace.after(obj) : originPlace.before(obj);
+            }
+            checkStatus();
+        })
+
+        startButton.addEventListener("click", () => {
+            setGame();
+            restartButton.style.display = "none"; // 게임 시작할 때 Restart 버튼 숨기기
+            startButton.style.display = "none"; // 게임 시작할 때 Start 버튼 숨기기
+        });
+
+        restartButton.addEventListener("click", () => {
+            restartGame();
+        });
+
+    </script>
+</body>
+
+</html>

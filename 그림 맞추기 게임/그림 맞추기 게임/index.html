@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>그림 퍼즐 맞추기 게임</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+
+<body>
+    <div class="difficulty-selection">
+        <a href="index.html" class="head" style="text-decoration: none;">그림 퍼즐 맞추기 게임</a>
+
+        <button class="button_description" id="show-description">게임 설명 보기</button>
+
+        <div class="game-description">
+            <p>이 게임은 사진 퍼즐 맞추기 게임입니다.</p>
+            <p>아래에서 원하는 난이도를 선택하세요.</p>
+            <p>게임은 Start 버튼을 누르면</p>
+            <p>5초간 처음 이미지를 보여줍니다.</p>
+            <p>그리고 5초가 지나면 사진이 무작위로 섞이게 되고</p>
+            <p>그 사진을 제자리에 맞게 모두 맞추게 되면 성공!!</p>
+        </div>
+
+        <h1>퍼즐 난이도를 선택해주세요.</h1>
+
+        <div class="container">
+            <button class="btn_difficulty" id="btn_easy">16개<br>(쉬움)</button>
+            <button class="btn_difficulty" id="button_medium">25개<br>(보통)</button>
+            <button class="btn_difficulty" id="button_hard">36개<br>(어려움)</button>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('show-description').addEventListener('click', function () {
+            const description = document.querySelector('.game-description');
+            // 설명을 토글하여 표시 또는 숨김
+            if (description.style.display === 'none' || description.style.display === '') {
+                description.style.display = 'block';
+            } else {
+                description.style.display = 'none';
+            }
+        });
+        document.getElementById('btn_easy').addEventListener('click', function () {
+            window.location.href = 'tile_16.html';
+        });
+
+        document.getElementById('button_medium').addEventListener('click', function () {
+            window.location.href = 'tile_25.html';
+        });
+
+        document.getElementById('button_hard').addEventListener('click', function () {
+            window.location.href = 'tile_36.html';
+        });
+    </script>
+</body>
+
+</html>

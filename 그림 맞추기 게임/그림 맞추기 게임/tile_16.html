@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="tile_16.css">
+    <title>그림 퍼즐 맞추기 게임</title>
+</head>
+
+<body>
+    <div class="wrap-all">
+        <a href="index.html" class="head" style="text-decoration: none;">그림 퍼즐 맞추기 게임</a>
+        <p class="play-time">0</p>
+        <ul class="image-container"></ul>
+        <button class="btn_start">Start</button>
+        <button class="btn_restart" style="display: none;">Restart</button>
+        <p class="game-text">Completed!</p>
+    </div>
+
+    <script>
+        const container = document.querySelector(".image-container");
+        const startButton = document.querySelector(".btn_start");
+        const restartButton = document.querySelector(".btn_restart");
+        const gameText = document.querySelector(".game-text");
+        const playTime = document.querySelector(".play-time");
+
+        const tileCount = 16;
+
+        let isPlaying = false;
+        let tiles = [];
+        let timeInterval = 0;
+        let time = 0;
+
+        const dragged = {
+            // 드래그 중인 타일 요소
+            el: null,
+            class: null,
+            index: null,
+        };
+
+        function setGame() {
+            isPlaying = true;
+            time = 0;
+            container.innerHTML = "";
+            gameText.style.display = "none";
+            clearInterval(timeInterval);
+
+            tiles = createImageTiles();
+
+            // 타일 컨테이너에 추가
+            tiles.forEach((tile) => container.appendChild(tile));
+
+            setTimeout(() => {
+                container.innerHTML = "";
+                shuffle(tiles).forEach((tile) => container.appendChild(tile));
+                timeInterval = setInterval(() => {
+                    playTime.innerHTML = time;
+                    time++;
+                }, 1000);
+                restartButton.style.display = "block";
+                startButton.style.display = "none";
+            }, 5000);
+        }
+
+        function restartGame() {
+            time = 0;
+            playTime.innerHTML = time;
+            setGame();
+            restartButton.style.display = "none";
+            startButton.style.display = "none";
+        }
+
+        function createImageTiles() {
+            const tempArray = [];
+            Array(tileCount).fill().forEach((_, i) => {
+                const li = document.createElement("li");
+                li.setAttribute("data-index", i);
+                li.setAttribute('draggable', 'true');
+                li.classList.add(`list${i}`);
+                tempArray.push(li);
+            })
+            return tempArray;
+        }
+
+        function shuffle(array) {
+            let index = array.length - 1;
+            while (index > 0) {
+                // floor : 주어진 숫자 이하의 가장 큰 정수를 반환
+                // random : 0부터 1미만의 난수를 생성 
+                const randomIndex = Math.floor(Math.random() * (index + 1));
+                [array[index], array[randomIndex]] = [array[randomIndex], array[index]]; // 배열 요소 무작위 섞기
+                index--;
+            }
+            return array;
+        }
+
+        function checkStatus() {
+            // 현재 컨테이너 내의 요소를 배열로 변환합니다.
+            const currentList = [...container.children];
+            // 그리고 각 이미지 타일의 원래 위치를 가져와서 
+            // 이미지 타일의 현재 위치가 원래 위치와 다른 경우의 타일 숫자를 unMatchedList 배열에 저장합니다.
+            // 그리고 이 배열의 길이가 0이 되면 모든 퍼즐 조각이 정위치 되었다는 의미 이기 때문에 게임 종료를 선언합니다.
+            const unMatchedList = currentList.filter((child, index) => {
+                return Number(child.getAttribute("data-index")) !== index;
+            });
+            if (unMatchedList.length === 0) {
+                gameText.style.display = "block";
+                isPlaying = false;
+                clearInterval(timeInterval);
+            }
+        }
+
+        container.addEventListener('dragstart', (e) => {
+            if (!isPlaying) return;
+            const obj = e.target;
+            dragged.el = obj;
+            dragged.class = obj.className;
+            // [...obj.parentNode.children].indexOf(obj) 드롭하는 위치를 배열로 만들어서
+            // 현재 드롭하는 요소의 인덱스를 찾아오는 코드이다.
+            dragged.index = [...obj.parentNode.children].indexOf(obj);
+        });
+
+        container.addEventListener('dragover', (e) => {
+            e.preventDefault();
+        });
+
+        container.addEventListener('drop', (e) => {
+            if (!isPlaying) return;
+            const obj = e.target;
+
+            if (obj.className !== dragged.class) {
+                let originPlace;
+                // 만약에 잘못 드래그 하였을 때 드래그 하였던 타일을 원래의 위치에
+                // 돌려놓아야 하기 때문에 isLastPosition이라는 변수를 생성합니다.
+                let isLastPosition = false;
+
+                if (dragged.el.nextSibling) {
+                    // nextSibling은 현재 요소의 다음 형제 요소를 뜻 한다.
+                    originPlace = dragged.el.nextSibling;
+                } else {
+                    originPlace = dragged.el.previousSibling;
+                    isLastPosition = true;
+                }
+                // [...obj.parentNode.children].indexOf(obj) 드롭하는 위치를 배열로 만들어서
+                // 현재 드롭하는 요소의 인덱스를 찾아오는 코드이다.
+                // 그 요소의 인덱스를 droppedIndex라는 변수에 저장하여 사용합니다.
+                const droppedIndex = dragged.index = [...obj.parentNode.children].indexOf(obj);
+                dragged.index > droppedIndex ? obj.before(dragged.el) : obj.after(dragged.el);
+                isLastPosition ? originPlace.after(obj) : originPlace.before(obj);
+            }
+            checkStatus();
+        });
+
+        startButton.addEventListener("click", () => {
+            setGame();
+            restartButton.style.display = "none";
+            startButton.style.display = "none";
+        });
+
+        restartButton.addEventListener("click", () => {
+            restartGame();
+        });
+    </script>
+</body>
+
+</html>
