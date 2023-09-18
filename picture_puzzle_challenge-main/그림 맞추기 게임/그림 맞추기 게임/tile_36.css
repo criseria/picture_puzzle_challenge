@@ -1,0 +1,255 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: #f0f0f0;
+    font-family: "Open Sans", sans-serif;
+}
+
+.wrap-all {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 100vh; 
+}
+
+:root {
+    --facebook : #3b5998;
+}
+
+.head {
+    font-size: 40px;
+    font-weight: bold;
+    color: darksalmon;
+    margin-bottom: 20px;
+}
+
+.play-time{
+    font-size: 3rem;
+    margin-top: 2rem;
+    color: var(--facebook);
+}
+
+ul{
+    margin-top:  1rem;
+    list-style: none;
+    border: 2px solid var(--facebook);
+    display: grid;
+    /* 6번 반복 */
+    grid-template-columns: repeat(6, 1fr);
+}
+
+li{
+    width: 100px;
+    height: 100px;
+    color: #fff;
+    background: url("https://picsum.photos/600/600");
+}
+
+.btn_start{
+    background-color: var(--facebook);
+    color: #fff;
+    border: none;
+    padding: 1rem 2rem;
+    margin-top: 1rem;
+}
+
+.game-text {
+    position: absolute;
+    font-size: 45px;
+    color: #67c23a;
+    text-shadow: 1px 1px rgba(0,0,0,0.5);
+    display: none;
+}
+
+.btn_restart {
+    background-color: var(--facebook);
+    color: #fff;
+    border: none;
+    padding: 1rem 2rem;
+    margin-top: 1rem;
+    display: none; /* 초기에는 숨김 */
+}
+
+.list0 {
+    background-position-x: 0px;
+    background-position-y: 0px;
+}
+
+.list1 {
+    background-position-x: -100px;
+    background-position-y: 0px;
+}
+
+.list2 {
+    background-position-x: -200px;
+    background-position-y: 0px;
+}
+
+.list3 {
+    background-position-x: -300px;
+    background-position-y: 0px;
+}
+
+.list4 {
+    background-position-x: -400px;
+    background-position-y: 0px;
+}
+
+.list5 {
+    background-position-x: -500px;
+    background-position-y: 0px;
+}
+
+.list6 {
+    background-position-x: 0px;
+    background-position-y: -100px;
+}
+
+.list7 {
+    background-position-x: -100px;
+    background-position-y: -100px;
+}
+
+.list8 {
+    background-position-x: -200px;
+    background-position-y: -100px;
+}
+
+.list9 {
+    background-position-x: -300px;
+    background-position-y: -100px;
+}
+
+.list10 {
+    background-position-x: -400px;
+    background-position-y: -100px;
+}
+
+.list11 {
+    background-position-x: -500px;
+    background-position-y: -100px;
+}
+
+.list12 {
+    background-position-x: 0px;
+    background-position-y: -200px;
+}
+
+.list13 {
+    background-position-x: -100px;
+    background-position-y: -200px;
+}
+
+.list14 {
+    background-position-x: -200px;
+    background-position-y: -200px;
+}
+
+.list15 {
+    background-position-x: -300px;
+    background-position-y: -200px;
+}
+
+.list16 {
+    background-position-x: -400px;
+    background-position-y: -200px;
+}
+
+.list17 {
+    background-position-x: -500px;
+    background-position-y: -200px;
+}
+
+.list18 {
+    background-position-x: 0px;
+    background-position-y: -300px;
+}
+
+.list19 {
+    background-position-x: -100px;
+    background-position-y: -300px;
+}
+
+.list20 {
+    background-position-x: -200px;
+    background-position-y: -300px;
+}
+
+.list21 {
+    background-position-x: -300px;
+    background-position-y: -300px;
+}
+
+.list22 {
+    background-position-x: -400px;
+    background-position-y: -300px;
+}
+
+.list23 {
+    background-position-x: -500px;
+    background-position-y: -300px;
+}
+
+.list24 {
+    background-position-x: 0px;
+    background-position-y: -400px;
+}
+
+.list25 {
+    background-position-x: -100px;
+    background-position-y: -400px;
+}
+
+.list26 {
+    background-position-x: -200px;
+    background-position-y: -400px;
+}
+
+.list27 {
+    background-position-x: -300px;
+    background-position-y: -400px;
+}
+
+.list28 {
+    background-position-x: -400px;
+    background-position-y: -400px;
+}
+
+.list29 {
+    background-position-x: -500px;
+    background-position-y: -400px;
+}
+
+.list30 {
+    background-position-x: 0px;
+    background-position-y: -500px;
+}
+
+.list31 {
+    background-position-x: -100px;
+    background-position-y: -500px;
+}
+
+.list32 {
+    background-position-x: -200px;
+    background-position-y: -500px;
+}
+
+.list33 {
+    background-position-x: -300px;
+    background-position-y: -500px;
+}
+
+.list34 {
+    background-position-x: -400px;
+    background-position-y: -500px;
+}
+
+.list35 {
+    background-position-x: -500px;
+    background-position-y: -500px;
+}
